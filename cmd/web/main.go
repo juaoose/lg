@@ -10,8 +10,8 @@ func main() {
 	// Register handlers
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
-	mux.HandleFunc("/snippet", showSnippet)
-	mux.HandleFunc("/snippet/create", createSnippet)
+	mux.HandleFunc("/snippet/view", snippetView)
+	mux.HandleFunc("/snippet/create", snippetCreate)
 
 	// Serve static content
 	fileServer := http.FileServer(http.Dir("./ui/static/"))

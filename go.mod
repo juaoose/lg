@@ -1,3 +1,3 @@
-module juanr.co/snippetbox
+module snippetbox.juanr.co
 
-go 1.17
+go 1.18

@@ -21,19 +21,6 @@ func main() {
 		errorLog: errorLog,
 		infoLog:  infoLog,
 	}
-	/*
-	 Register handlers: note that these functions are not Handlers
-	 (they do not satisfy the http.Handler interface), but with mux.HandleFunc
-	 we skip the requirement
-	*/
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", app.home)
-	mux.HandleFunc("/snippet/view", app.snippetView)
-	mux.HandleFunc("/snippet/create", app.snippetCreate)
-
-	// Serve static content
-	fileServer := http.FileServer(http.Dir("./ui/static/"))
-	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
 	// Retrieve command line attributes
 	addr := flag.String("addr", ":8080", "HTTP network address")
@@ -42,7 +29,7 @@ func main() {
 	srv := &http.Server{
 		Addr:     *addr,
 		ErrorLog: errorLog,
-		Handler:  mux,
+		Handler:  app.routes(),
 	}
 
 	// Start server

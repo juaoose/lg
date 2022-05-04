@@ -7,7 +7,11 @@ import (
 )
 
 func main() {
-	// Register handlers
+	/*
+	 Register handlers: note that these functions are not Handlers
+	 (they do not satisfy the http.Handler interface), but with mux.HandleFunc
+	 we skip the requirement
+	*/
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", home)
 	mux.HandleFunc("/snippet/view", snippetView)

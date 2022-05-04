@@ -7,16 +7,29 @@ import (
 	"os"
 )
 
+type application struct {
+	errorLog *log.Logger
+	infoLog  *log.Logger
+}
+
 func main() {
+
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
+	app := &application{
+		errorLog: errorLog,
+		infoLog:  infoLog,
+	}
 	/*
 	 Register handlers: note that these functions are not Handlers
 	 (they do not satisfy the http.Handler interface), but with mux.HandleFunc
 	 we skip the requirement
 	*/
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", home)
-	mux.HandleFunc("/snippet/view", snippetView)
-	mux.HandleFunc("/snippet/create", snippetCreate)
+	mux.HandleFunc("/", app.home)
+	mux.HandleFunc("/snippet/view", app.snippetView)
+	mux.HandleFunc("/snippet/create", app.snippetCreate)
 
 	// Serve static content
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
@@ -25,9 +38,6 @@ func main() {
 	// Retrieve command line attributes
 	addr := flag.String("addr", ":8080", "HTTP network address")
 	flag.Parse()
-
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	srv := &http.Server{
 		Addr:     *addr,

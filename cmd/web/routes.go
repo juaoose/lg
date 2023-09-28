@@ -2,7 +2,7 @@ package main
 
 import "net/http"
 
-func (app *application) routes() *http.ServeMux {
+func (app *Application) routes() *http.ServeMux {
 	/*
 	 Register handlers: note that these functions are not Handlers
 	 (they do not satisfy the http.Handler interface), but with mux.HandleFunc
